@@ -1,26 +1,42 @@
 import Link from 'next/link'
 import Image from 'next/image'
 
-
 export default function Navbar() {
+    const handleLogout = () => {
+        console.log("Cerrar sesión"); // Aquí podrías poner tu lógica de logout
+    }
+
     return (
         <nav className="bg-white text-black px-6 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
                 <Image src="/logo.png" alt="Logo" width={40} height={40} />
                 <span className="text-xl font-bold">Happy Paws</span>
             </div>
-            <ul className="flex gap-4">
+
+            <ul className="flex items-center gap-4">
                 <li className="px-7">
-                    <Link href="/">REGISTRO</Link>
+                    <Link href="/construccion">REGISTRO</Link>
                 </li>
                 <li>
-                    <Link href="/about">PACIENTES</Link>
+                    <Link href="/construccion">PACIENTES</Link>
                 </li>
                 <li className="px-7">
-                    <Link href="/contact">HISTORIAL</Link>
+                    <Link href="/construccion">HISTORIAL</Link>
                 </li>
                 <li className="px-7">
-                    <Link href="/contact">CITAS</Link>
+                    <Link href="/construccion">CITAS</Link>
+                </li>
+
+                {/* Imagen de cerrar sesión */}
+                <li className="cursor-pointer">
+                    <Image 
+                        src="/sesion.png" 
+                        alt="Cerrar sesión" 
+                        width={30} 
+                        height={30}                       
+                        onClick={handleLogout} 
+                        title="Cerrar sesión"
+                    />
                 </li>
             </ul>
         </nav>

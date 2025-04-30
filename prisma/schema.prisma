@@ -7,105 +7,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Estado {
-  idEstado    Int     @id @default(autoincrement())
-  descripcion String
-  citas       Cita[]
+model TipoMascota{
+  idTipo Int @id    @default(autoincrement())
+  Tipo   String
+  foto   String
+  mascotas Mascota[]
 }
-
-model Cita {
-  idCita             Int      @id @default(autoincrement())
-  notasAdicionales  String?
-  nombre_dueño      String
-  telefono          String
-  email             String
-  fecha             DateTime
-  hora              String
-  motivo            String
-  duenioId          Int
-  duenio            Duenio @relation(fields: [duenioId], references: [id_dueno])
-  idEstado          Int
-  estado           Estado @relation(fields: [idEstado], references: [idEstado])
-}
-
-
-model Duenio {
-  id_dueno   Int     @id @default(autoincrement())
-  telefono   String
-  direccion  String
-  email      String
-  nombre     String
-  apellidos  String
-  mascotas   Mascota[]
-  citas      Cita[]
-}
-
-model Mascota {
-  NoExpediente      String  @id
-  senasParticulares String
-  sexo              String
-  nombre            String
-  edad              Int
-  color             String
-  nacimiento        DateTime
-  raza              String
-  
-  idVigencia        Int
-  vigencia          Vigencia @relation(fields: [idVigencia], references: [id_vigencia])
-  
-  idTipoMascota     Int
-  tipoMascota       TipoMascota @relation(fields: [idTipoMascota], references: [idTipoMascota])
-
-
-  historial         Historial?
-
-  duenioId          Int
-  duenio            Duenio @relation(fields: [duenioId], references: [id_dueno])
-
-  vacunas          MascotaVacuna[]
-}
-
-model Vigencia {
-  id_vigencia   Int     @id @default(autoincrement())
-  descripcion   String
-  mascotas      Mascota[]
-}
-
-model TipoMascota {
-  idTipoMascota Int     @id @default(autoincrement())
-  descripcion   String
-  mascotas      Mascota[]
-}
-
-model Historial {
-  idHistorial            Int     @id @default(autoincrement())
-  peso_actual           Float
-  tamano               String
-  alergias             String?
-  ultimaDesparasitacion DateTime?
-  condicionesPrevias    String?
-  esterilizacion       Boolean
-
-  mascotaId           String @unique
-  mascota            Mascota @relation(fields: [mascotaId], references: [NoExpediente])
-}
-
-model Vacuna {
-  idVacuna         Int     @id @default(autoincrement())
-  nombre           String
-  descripcion      String?
-  dosis           String
-  mascotas        MascotaVacuna[]
-}
-
-model MascotaVacuna {
-  id               Int      @id @default(autoincrement())
-  mascotaId       String
-  vacunaId        Int
-  fechaAplicacion DateTime // Fecha en la que se aplicó la vacuna
-
-  mascota        Mascota @relation(fields: [mascotaId], references: [NoExpediente])
-  vacuna         Vacuna  @relation(fields: [vacunaId], references: [idVacuna])
-
-  @@unique([mascotaId, vacunaId]) // Evita duplicados en la combinación de mascota y vacuna
-}
+ model Mascota{
+  id  Int @id   @default(autoincrement())
+  nombre String
+  sexo  String
+  raza  String
+  nacimiento  DateTime
+  color String
+  senasPaerticulares  String
+  tipomascotaId Int 
+  tipomascota TipoMascota @relation(fields: [tipomascotaId], references: [idTipo])
+ }
