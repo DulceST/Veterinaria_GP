@@ -15,10 +15,10 @@ export default function Navbar() {
 
             <ul className="flex items-center gap-4">
                 <li className="px-7">
-                    <Link href="/construccion">REGISTRO</Link>
+                    <Link href="/registro">REGISTRO</Link>
                 </li>
                 <li>
-                    <Link href="/construccion">PACIENTES</Link>
+                    <Link href="/pacientes">PACIENTES</Link>
                 </li>
                 <li className="px-7">
                     <Link href="/construccion">HISTORIAL</Link>
