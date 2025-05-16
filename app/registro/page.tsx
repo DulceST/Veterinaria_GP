@@ -8,7 +8,7 @@ import { SelectTipoMascota } from "../components/SelectTipoMascota";
 
 export default function RegistroPage() {
   const [selectedTipo, setSelectedTipo] = useState("");
-  
+
   const [activeTab, setActiveTab] = useState<"mascota" | "historial">("mascota");
 
   const [formData, setFormData] = useState({
@@ -19,7 +19,7 @@ export default function RegistroPage() {
     raza: "",
     nacimiento: "",
     color: "",
-    senas: "",
+    senasParticulares: "",
     tipomascotaId: "",
 
     // Datos dueño
@@ -140,7 +140,7 @@ export default function RegistroPage() {
                     <Input label="Raza" name="raza" value={formData.raza} onChange={handleChange} />
                     <Input label="Fecha de nacimiento" name="nacimiento" type="date" value={formData.nacimiento} onChange={handleChange} />
                     <Input label="Color" name="color" value={formData.color} onChange={handleChange} />
-                    <Input label="Señas particulares" name="senas" value={formData.senas} onChange={handleChange} />
+                    <Input label="Señas particulares" name="senasParticulares" value={formData.senasParticulares} onChange={handleChange} />
                   </div>
 
 
