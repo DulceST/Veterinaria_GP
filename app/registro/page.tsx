@@ -2,8 +2,13 @@
 
 import Navbar from "../components/Navbar";
 import React, { useState } from "react";
+import { SelectTipoMascota } from "../components/SelectTipoMascota";
+
+
 
 export default function RegistroPage() {
+  const [selectedTipo, setSelectedTipo] = useState("");
+  
   const [activeTab, setActiveTab] = useState<"mascota" | "historial">("mascota");
 
   const [formData, setFormData] = useState({
@@ -16,6 +21,7 @@ export default function RegistroPage() {
     color: "",
     senas: "",
     tipomascotaId: "",
+
     // Datos dueño
     nombreDuenio: "",
     apellidos: "",
@@ -23,6 +29,7 @@ export default function RegistroPage() {
     direccion: "",
     telefono: "",
     // Historial clínico
+    mascotaid: "",
     vacunas: "",
     alergias: "",
     enfermedades: "",
@@ -47,15 +54,15 @@ export default function RegistroPage() {
       activeTab === "mascota"
         ? ["nombreMascota", "sexo", "edad", "raza", "nacimiento", "color", "senas", "nombreDuenio", "apellidos", "email", "direccion", "telefono"]
         : [
-            "vacunas",
-            "alergias",
-            "enfermedades",
-            "tamano",
-            "pesoActual",
-            "esterilizado",
-            "condicionesPrevias",
-            "ultimaDesparasitacion",
-          ];
+          "vacunas",
+          "alergias",
+          "enfermedades",
+          "tamano",
+          "pesoActual",
+          "esterilizado",
+          "condicionesPrevias",
+          "ultimaDesparasitacion",
+        ];
 
     for (let key of requiredFields) {
       if ((formData as any)[key] === "") {
@@ -76,21 +83,19 @@ export default function RegistroPage() {
       <div className="bg-gray-100 py-4 flex justify-center space-x-4 border-b border-gray-300">
         <button
           onClick={() => setActiveTab("mascota")}
-          className={`px-6 py-2 rounded-t-md font-semibold ${
-            activeTab === "mascota"
+          className={`px-6 py-2 rounded-t-md font-semibold ${activeTab === "mascota"
               ? "bg-white border border-b-0 border-gray-300 text-blue-600"
               : "bg-gray-200 text-gray-700"
-          }`}
+            }`}
         >
           Registro de Mascota
         </button>
         <button
           onClick={() => setActiveTab("historial")}
-          className={`px-6 py-2 rounded-t-md font-semibold ${
-            activeTab === "historial"
+          className={`px-6 py-2 rounded-t-md font-semibold ${activeTab === "historial"
               ? "bg-white border border-b-0 border-gray-300 text-blue-600"
               : "bg-gray-200 text-gray-700"
-          }`}
+            }`}
         >
           Historial Clínico
         </button>
@@ -126,13 +131,19 @@ export default function RegistroPage() {
                       </div>
                     </div>
                     <Input label="Edad" name="edad" type="number" value={formData.edad} onChange={handleChange} />
+
+                    
+                    <SelectTipoMascota
+  value={selectedTipo}
+  onChange={(e) => setSelectedTipo(e.target.value)}
+/>
                     <Input label="Raza" name="raza" value={formData.raza} onChange={handleChange} />
                     <Input label="Fecha de nacimiento" name="nacimiento" type="date" value={formData.nacimiento} onChange={handleChange} />
                     <Input label="Color" name="color" value={formData.color} onChange={handleChange} />
                     <Input label="Señas particulares" name="senas" value={formData.senas} onChange={handleChange} />
                   </div>
 
-                  
+
                 </div>
 
                 {/* Columna derecha: Dueño */}

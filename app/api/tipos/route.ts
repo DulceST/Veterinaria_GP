@@ -13,11 +13,12 @@ export async function GET() {
   }
 }
 
-// POST: Registrar nueva mascota
+/// POST: Registrar nueva mascota
 export async function POST(req: Request) {
   try {
-    const body = await req.json()
+    const body = await req.json();
 
+    
     const nuevaMascota = await prisma.mascota.create({
       data: {
         nombre: body.nombre,
@@ -25,20 +26,30 @@ export async function POST(req: Request) {
         raza: body.raza,
         nacimiento: new Date(body.nacimiento),
         color: body.color,
-        senasPaerticulares: body.senasPaerticulares,
+        senasParticulares: body.senasParticulares,
         tipomascotaId: parseInt(body.tipomascotaId),
+        duenioId: parseInt(body.duenioId),
+      },
+    });
+
+    // Paso 2: Crear el historial usando el ID de la mascota
+    const historial = await prisma.historial.create({
+      data: {
+        vacunas: body.vacunas,
+        Alergias: body.alergias,
+        Enfermedades: body.enfermedades,
         tamano: body.tamano,
         pesoActual: parseFloat(body.pesoActual),
-        esterilizado: body.esterilizado === true || body.esterilizado === 'true',
+        Esterilizacion: body.esterilizado === true || body.esterilizado === 'true',
         condicionesPrevias: body.condicionesPrevias,
-        ultimaDesparasitacion: new Date(body.ultimaDesparasitacion),
-        alergias: body.alergias
-      }
-    })
+        Desparasitacion: new Date(body.ultimaDesparasitacion),
+        mascotaId: nuevaMascota.id, // Asociar con mascota recién creada
+      },
+    });
 
-    return NextResponse.json(nuevaMascota)
+    return NextResponse.json({ mascota: nuevaMascota, historial });
   } catch (error) {
-    console.error(error)
-    return NextResponse.json({ error: 'Error al registrar la mascota' }, { status: 500 })
+    console.error(error);
+    return NextResponse.json({ error: 'Error al registrar la mascota o historial' }, { status: 500 });
   }
 }

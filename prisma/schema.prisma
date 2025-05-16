@@ -25,8 +25,7 @@ model TipoMascota{
   tipomascota TipoMascota @relation(fields: [tipomascotaId], references: [idTipo])
   duenioId Int
   duenio Duenio @relation(fields: [duenioId], references: [idDuenio])
-  historiaId Int
-  historial Historial @relation(fields: [historiaId],references: [idHistorial])
+  historial Historial[]
  }
 
  model Duenio{
@@ -49,7 +48,8 @@ model TipoMascota{
   Esterilizacion Boolean
   condicionesPrevias String
   Desparasitacion DateTime
-  mascotas Mascota[]
+  mascotaId Int
+  mascota Mascota @relation(fields: [mascotaId],references: [id])
  }
 
  enum Sexo {
