@@ -16,11 +16,49 @@ model TipoMascota{
  model Mascota{
   id  Int @id   @default(autoincrement())
   nombre String
-  sexo  String
+  sexo  Sexo
   raza  String
   nacimiento  DateTime
   color String
-  senasPaerticulares  String
+  senasParticulares  String
   tipomascotaId Int 
   tipomascota TipoMascota @relation(fields: [tipomascotaId], references: [idTipo])
+  duenioId Int
+  duenio Duenio @relation(fields: [duenioId], references: [idDuenio])
+  historiaId Int
+  historial Historial @relation(fields: [historiaId],references: [idHistorial])
  }
+
+ model Duenio{
+  idDuenio Int @id   @default(autoincrement())
+  nombre String
+  apellidos String
+  Email String
+  Direccion String
+  Telefono String
+  mascotas Mascota[]
+ }
+
+ model Historial{
+  idHistorial Int @id   @default(autoincrement())
+  vacunas String 
+  Alergias String
+  Enfermedades String
+  tamano Tamano
+  pesoActual Float
+  Esterilizacion Boolean
+  condicionesPrevias String
+  Desparasitacion DateTime
+  mascotas Mascota[]
+ }
+
+ enum Sexo {
+  macho
+  hembra
+}
+
+enum Tamano {
+  pequeno
+  mediano
+  grande
+}

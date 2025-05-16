@@ -15,6 +15,7 @@ export default function RegistroPage() {
     nacimiento: "",
     color: "",
     senas: "",
+    tipomascotaId: "",
     // Datos dueño
     nombreDuenio: "",
     apellidos: "",
@@ -130,6 +131,8 @@ export default function RegistroPage() {
                     <Input label="Color" name="color" value={formData.color} onChange={handleChange} />
                     <Input label="Señas particulares" name="senas" value={formData.senas} onChange={handleChange} />
                   </div>
+
+                  
                 </div>
 
                 {/* Columna derecha: Dueño */}
