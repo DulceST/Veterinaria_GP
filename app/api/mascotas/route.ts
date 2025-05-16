@@ -1,51 +1,52 @@
-// src/app/api/registro/route.ts (si usas App Router)
-// o pages/api/registro.ts (si usas Pages Router)
+import { NextRequest, NextResponse } from "next/server";
+import { PrismaClient } from "@prisma/client";
 
-import { NextResponse } from "next/server";
-import { prisma } from "@/src/lib/prisma"; // Asegúrate de que la ruta esté bien
+const prisma = new PrismaClient();
 
-export async function POST(request: Request) {
-    const data = await request.json();
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json();
 
-    try {
-        const mascota = await prisma.mascota.create({
-            data: {
-                nombre: data.nombreMascota,
-                sexo: data.sexo,
-                raza: data.raza,
-                nacimiento: new Date(data.nacimiento),
-                color: data.color,
-                senasParticulares: data.senasParticulares, 
-                tipomascota: {
-                    connect: { idTipo: parseInt(data.tipomascotaId) },
-                },
-                duenio: {
-                    create: {
-                        nombre: data.nombreDuenio,
-                        apellidos: data.apellidos,
-                        Email: data.email,
-                        Direccion: data.direccion,
-                        Telefono: data.telefono,
-                    },
-                },
-                historial: {
-                    create: {
-                        vacunas: data.vacunas,
-                        Alergias: data.Alergias,
-                        Enfermedades: data.Enfermedades,
-                        tamano: data.tamano,
-                        pesoActual: parseFloat(data.pesoActual),
-                        Esterilizacion: data.esterilizado === "sí",
-                        condicionesPrevias: data.condicionesPrevias,
-                        Desparasitacion: new Date(data.ultimaDesparasitacion)
-                    },
-                },
-            },
-        });
+    const nuevoDuenioConMascotaEHistorial = await prisma.duenio.create({
+      data: {
+        nombre: body.duenio.nombre,
+        apellidos: body.duenio.apellidos,
+        Email: body.duenio.email,
+        Direccion: body.duenio.direccion,
+        Telefono: body.duenio.telefono,
+        mascotas: {
+          create: [
+            {
+              nombre: body.mascota.nombre,
+              sexo: body.mascota.sexo,
+              raza: body.mascota.raza,
+              nacimiento: new Date(body.mascota.nacimiento),
+              color: body.mascota.color,
+              senasParticulares: body.mascota.senasParticulares,
+              tipomascotaId: parseInt(body.mascota.tipomascotaId),
+              historial: {
+                create: [
+                  {
+                    vacunas: body.historial.vacunas,
+                    Alergias: body.historial.alergias,
+                    Enfermedades: body.historial.enfermedades,
+                    tamano: body.historial.tamano,
+                    pesoActual: parseFloat(body.historial.pesoActual),
+                    Esterilizacion: body.historial.esterilizacion,
+                    condicionesPrevias: body.historial.condicionesPrevias,
+                    Desparasitacion: new Date(body.historial.desparasitacion),
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    });
 
-        return NextResponse.json({ success: true, mascota });
-    } catch (error) {
-        console.error(error);
-        return NextResponse.json({ success: false, error: "Error al registrar la mascota." }, { status: 500 });
-    }
+    return NextResponse.json(nuevoDuenioConMascotaEHistorial, { status: 201 });
+  } catch (error) {
+    console.error("Error creando dueño, mascota e historial:", error);
+    return NextResponse.json({ error: "Error al crear dueño, mascota e historial" }, { status: 500 });
+  }
 }
