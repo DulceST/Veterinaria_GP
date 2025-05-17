@@ -7,7 +7,7 @@ export default function Navbar() {
     }
 
     return (
-        <nav className="bg-black text-white px-6 py-4 flex items-center justify-between">
+        <nav className="bg-white text-black px-6 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
                 <Image src="/logo.png" alt="Logo" width={40} height={40} />
                 <span className="text-xl font-bold">Happy Paws</span>
