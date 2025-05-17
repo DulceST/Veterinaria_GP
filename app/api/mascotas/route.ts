@@ -3,6 +3,17 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+export async function GET() {
+  const pacientes = await prisma.mascota.findMany({
+    include: {
+      duenio: true,
+      historial: true,
+    },
+  });
+
+  return NextResponse.json(pacientes);
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -13,7 +24,7 @@ export async function POST(req: NextRequest) {
         apellidos: body.duenio.apellidos,
         Email: body.duenio.email,
         Direccion: body.duenio.direccion,
-        Telefono: body.duenio.telefono,
+        Telefono: body.duenio.Telefono,
         mascotas: {
           create: [
             {

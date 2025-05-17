@@ -7,52 +7,54 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model TipoMascota{
-  idTipo Int @id    @default(autoincrement())
-  Tipo   String
-  foto   String
+model TipoMascota {
+  idTipo   Int       @id @default(autoincrement())
+  Tipo     String
+  foto     String
   mascotas Mascota[]
 }
- model Mascota{
-  id  Int @id   @default(autoincrement())
-  nombre String
-  sexo  Sexo
-  raza  String
-  nacimiento  DateTime
-  color String
-  senasParticulares  String
-  tipomascotaId Int 
-  tipomascota TipoMascota @relation(fields: [tipomascotaId], references: [idTipo])
-  duenioId Int
-  duenio Duenio @relation(fields: [duenioId], references: [idDuenio])
-  historial Historial[]
- }
 
- model Duenio{
-  idDuenio Int @id   @default(autoincrement())
-  nombre String
+model Mascota {
+  id                Int         @id @default(autoincrement())
+  nombre            String
+  raza              String
+  nacimiento        DateTime
+  color             String
+  tipomascotaId     Int
+  duenioId          Int
+  senasParticulares String
+  sexo              Sexo
+  historial         Historial[]
+  duenio            Duenio      @relation(fields: [duenioId], references: [idDuenio])
+  tipomascota       TipoMascota @relation(fields: [tipomascotaId], references: [idTipo])
+  vigente           Boolean      @default(true)
+}
+
+model Duenio {
+  idDuenio  Int       @id @default(autoincrement())
+  nombre    String
   apellidos String
-  Email String
+  Email     String
   Direccion String
-  Telefono String
-  mascotas Mascota[]
- }
+  Telefono  String
+  mascotas  Mascota[]
+}
 
- model Historial{
-  idHistorial Int @id   @default(autoincrement())
-  vacunas String 
-  Alergias String
-  Enfermedades String
-  tamano Tamano
-  pesoActual Float
-  Esterilizacion Boolean
+model Historial {
+  idHistorial        Int      @id @default(autoincrement())
+  vacunas            String
+  Alergias           String
+  Enfermedades       String
+  tamano             Tamano
+  pesoActual         Float
+  Esterilizacion     Boolean
   condicionesPrevias String
-  Desparasitacion DateTime
-  mascotaId Int
-  mascota Mascota @relation(fields: [mascotaId],references: [id])
- }
+  Desparasitacion    DateTime
+  mascotaId          Int
+  mascota            Mascota  @relation(fields: [mascotaId], references: [id])
+}
 
- enum Sexo {
+enum Sexo {
   macho
   hembra
 }
